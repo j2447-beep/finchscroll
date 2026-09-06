@@ -11,6 +11,25 @@ builds anywhere with a C++17 compiler.
 make
 ```
 
+Needs a C++17 compiler and `make`. Most systems have both; two that do not:
+
+| System | First |
+|---|---|
+| Arch Linux | `sudo pacman -S base-devel` |
+| Debian / Ubuntu | `sudo apt install build-essential` |
+
+A base Arch install ships neither `gcc` nor `make` — they are in the
+`base-devel` group, which is not installed by default. The symptom is
+`make: command not found`, which reads as the wrong command rather than a
+missing package.
+
+There is nothing to configure and no dependencies to fetch. If you would
+rather skip `make` entirely, the Makefile only runs this:
+
+```sh
+g++ -std=c++17 -O2 -Wall -Wextra -o finchscroll finchscroll.cpp
+```
+
 ## Use
 
 ```sh
