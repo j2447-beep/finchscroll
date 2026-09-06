@@ -11,6 +11,25 @@ builds anywhere with a C++17 compiler.
 make
 ```
 
+Needs a C++17 compiler and `make`. Most systems have both; two that do not:
+
+| System | First |
+|---|---|
+| Arch Linux | `sudo pacman -S base-devel` |
+| Debian / Ubuntu | `sudo apt install build-essential` |
+
+A base Arch install ships neither `gcc` nor `make` — they are in the
+`base-devel` group, which is not installed by default. The symptom is
+`make: command not found`, which reads as the wrong command rather than a
+missing package.
+
+There is nothing to configure and no dependencies to fetch. If you would
+rather skip `make` entirely, the Makefile only runs this:
+
+```sh
+g++ -std=c++17 -O2 -Wall -Wextra -o finchscroll finchscroll.cpp
+```
+
 ## Use
 
 ```sh
@@ -64,6 +83,17 @@ look broken.
 ## Portability
 
 Written against standard C++17 plus POSIX signals, with no GNU or Apple
-extensions. Developed and tested on macOS, where `g++` is Apple clang
-rather than GNU g++ — so the Linux build is expected to work but has not
-been verified on GCC. `make` there is the whole test.
+extensions.
+
+Built on both:
+
+| Platform | Compiler |
+|---|---|
+| macOS (arm64) | Apple clang — note `g++` there is clang, not GNU g++ |
+| Arch Linux | GNU GCC |
+
+That distinction matters: because macOS ships `g++` as an alias for clang,
+a clean build there says nothing about GCC. The one real portability bug
+found so far was `errno` used without including `<cerrno>`, which Apple's
+libc++ supplies transitively via `<cstring>` and libstdc++ does not
+promise to.
